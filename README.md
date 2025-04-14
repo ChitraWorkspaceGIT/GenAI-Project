@@ -102,7 +102,7 @@ data_merge.head(10)
 ```
 ```data_merge.columns```
 
-Drop unnecessary columns
+__Drop unnecessary columns__
 ```
 data=data_merge.drop(['title','subject','date'], axis = 1)
 data.isnull().sum()
@@ -140,6 +140,7 @@ data['text'] = data['text'].apply(clean_text)
 ### 5. Vectorization and Model Training
 
 __Features and labels & Splitting the data__
+
 Defining dependent and independent variable
 ```
 x = data["text"]
@@ -183,7 +184,8 @@ DT.score(xv_test, y_test)
 ```print(classification_report(y_test, prediction_dt))```
 
 __5.3 Gradient Boosting Classifier__
-```from sklearn.ensemble import GradientBoostingClassifier
+```
+from sklearn.ensemble import GradientBoostingClassifier
 
 GBC = GradientBoostingClassifier(random_state=0)
 GBC.fit(xv_train, y_train)
@@ -233,6 +235,7 @@ def manual_testing(news):
         output_label(pred_GBC[0]),
         output_label(pred_RFC[0])
     ))
+```
 ```
 news = "paste any lines of fake.csv or true.csv"
 manual_testing(news)
