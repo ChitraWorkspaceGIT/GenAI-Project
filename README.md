@@ -1,5 +1,5 @@
 # FAKE NEWS DETECTION PROJECT STEP BY STEP
-__1. PREREQUISITES__
+### __1. PREREQUISITES__
 
 Setup IDE Environment
 
@@ -18,7 +18,8 @@ Open the terminal and run these one by one:
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 #venv\Scripts\Activate         # Activate the environment
 ```
-__2. Download Dataset__
+### __2. Download Dataset__
+
 In terminal
 ```
 #pip install kaggle
@@ -34,7 +35,8 @@ Extract it in your project folder(.kaggle), e.g. fake-and-real-news-dataset/data
 
 You should now see Fake.csv and True.csv in VS Code.
 
-__3. Install Python Libraries__
+### __3. Install Python Libraries__
+
 In the terminal, install the required libraries:
 
 (And the path C:\Users\chint.kaggle)
@@ -46,7 +48,7 @@ Create and Run the Jupyter Notebook
 
 Inside fake-and-real-news-dataset/data, create a new file: app.ipynb
 
-__4 Importing Libraries & Preprocessing data__
+### __4 Importing Libraries & Preprocessing data__
 ```
 import pandas as pd
 import numpy as np
@@ -59,118 +61,154 @@ import re
 import string
 ```
 __Load data__
+```
+data_fake=pd.read_csv('Fake.csv')
+data_true=pd.read_csv('True.csv')
 
-fake = pd.read_csv("Fake.csv")
-true = pd.read_csv("True.csv")
-fake.head()
-true.head()
-Label the data
+```
+```data_fake.head()```
+```data_true.head()```
 
-fake["label"] = 0
-true["label"] = 1
-fake.shape, true.shape
-
-fake_manual_testing = fake.tail(10)
+__Label the data__
+```
+data_fake["label"] = 0
+data_true["label"] = 1
+```
+```data_fake.shape, data_true.shape```
+```
+data_fake_manual_testing = fake.tail(10)
 for i in range(23480,23470,-1):
-    fake.drop([i], axis = 0, inplace = True)
+    data_fake.drop([i], axis = 0, inplace = True)
     
-    
-true_manual_testing = true.tail(10)
+data_true_manual_testing = true.tail(10)
 for i in range(21416,21406,-1):
-    true.drop([i], axis = 0, inplace = True)
-fake.shape, true.shape
-
-fake_manual_testing["label"] = 0
-true_manual_testing["label"] = 1
-fake_manual_testing.head(10)
-true_manual_testing.head(10)
+    data_true.drop([i], axis = 0, inplace = True)
+```
+```data_fake.shape, data_true.shape```
+```
+data_fake_manual_testing["label"] = 0
+data_true_manual_testing["label"] = 1
+```
+```data_fake_manual_testing.head(10)```
+```data_true_manual_testing.head(10)```
+```
 manual_testing = pd.concat([fake_manual_testing,true_manual_testing], axis = 0)
 manual_testing.to_csv("manual_testing.csv")
-Merge both datasets
-
-data = pd.concat([fake, true], axis =0 )
-data.head(10)
-data.columns
+```
+__Merge both datasets__
+```
+data_merge=pd.concat([data_fake, data_true], axis = 0)
+data_merge.head(10)
+```
+```data_merge.columns```
 
 Drop unnecessary columns
-
-data = data.drop(["title", "subject", "date"], axis = 1)
+```
+data=data_merge.drop(['title','subject','date'], axis = 1)
 data.isnull().sum()
-Random Shuffle
-
+```
+__Random Shuffle__
+```
 data = data.sample(frac = 1)
 data.head()
-data.reset_index(inplace=True)
-data.drop(["index"], axis=1, inplace=True)
+```
+```
+data.reset_index(inplace = True)
+data.drop(['index'], axis = 1, inplace = True)
+```
+```
 data.columns
-data.head()
+```
+```data.head()```
 
-Clean the text
-
+__Preprocessing text(cleaning the text)__
+```
 def clean_text(text):
-    text = text.lower()
-    text = re.sub('\[.*?\]' , " ", text)
-    text = re.sub("\\W" , " " , text)
-    text = re.sub("https? : ://\S+|www\.\S+", "" , text)
-    text = re.sub("<.*?>+" , " ", text)
-    text = re.sub("[%s]" % re.escape(string.punctuation), " ", text)
-    text = re.sub("\n" , " " , text)
-    text = re.sub ("\w*\d\w*" , " " , text)
+    text = text.lower()  
+    text = re.sub(r'\[.*?\]', '', text)
+    text = re.sub(r'https?://\S+|www\.\S+', '', text) 
+    text = re.sub(r'<.*?>+', '', text) 
+    text = re.sub(r'\n', ' ', text) 
+    text = re.sub(r'\w*\d\w*', '', text)  
+    text = re.sub(r'[^\w\s\?!]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
     return text
-data["text"] = data["text"].apply(clean_text)
-5. Vectorization and Model Training
-Features and labels & Splitting the data
+```
+```
+data['text'] = data['text'].apply(clean_text)
+```
+### 5. Vectorization and Model Training
 
-x= data["text"]
-y= data["label"]
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=42)
-TF-IDF Vectorization(Convert text to vectors)
-
+__Features and labels & Splitting the data__
+Defining dependent and independent variable
+```
+x = data["text"]
+y = data["label"]
+#Splitting the data into training and testing set
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size = 0.25)
+```
+__TF-IDF Vectorization(Convert text to vectors)__
+```
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 vectorizer = TfidfVectorizer()
 xv_train = vectorizer.fit_transform(x_train)
 xv_test = vectorizer.transform(x_test)
-5.1 Logistic Regression
+```
+__5.1 Logistic Regression__
+```
 from sklearn.linear_model import LogisticRegression
 
 lr = LogisticRegression()
 lr.fit(xv_train, y_train)
-Evaluate Model and Save It
-
+```
+__Evaluate Model and Save It__
+```
 prediction = lr.predict(xv_test)
 lr.score(xv_test, y_test)
-print(classification_report(y_test, prediction))
+```
+```print(classification_report(y_test, prediction))```
 
-5.2 Decision Tree Classification
+__5.2 Decision Tree Classification__
+```
 from sklearn.tree import DecisionTreeClassifier
 
 DT = DecisionTreeClassifier()
 DT.fit(xv_train, y_train)
+```
+```
 prediction_dt = DT.predict(xv_test)
 DT.score(xv_test, y_test)
-print(classification_report(y_test, prediction_dt))
+```
+```print(classification_report(y_test, prediction_dt))```
 
-5.3 Gradient Boosting Classifier
-from sklearn.ensemble import GradientBoostingClassifier
+__5.3 Gradient Boosting Classifier__
+```from sklearn.ensemble import GradientBoostingClassifier
 
 GBC = GradientBoostingClassifier(random_state=0)
 GBC.fit(xv_train, y_train)
+```
+```
 prediction_gbc = GBC.predict(xv_test)
 GBC.score(xv_test, y_test)
-print(classification_report(y_test, prediction_gbc))
+```
+```print(classification_report(y_test, prediction_gbc))```
 
-5.4 Random Forest Classifier
+__5.4 Random Forest Classifier__
+```
 from sklearn.ensemble import RandomForestClassifier
 
 RFC = RandomForestClassifier(random_state=0)
 RFC.fit(xv_train, y_train)
+```
+```
 prediction_rfc = RFC.predict(xv_test)
 RFC.score(xv_test, y_test)
-print(classification_report(y_test, prediction_rfc))
+```
+```print(classification_report(y_test, prediction_rfc))```
 
-6. Testing the Model
+### 6. Testing the Model
+```
 def output_label(n):
     if n == 0:
         return "Fake News"
@@ -184,29 +222,36 @@ def manual_testing(news):
     new_x_test = new_def_test["text"]
     new_xv_test = vectorizer.transform(new_x_test)
 
-    prediction_lr = lr.predict(new_xv_test)
-    prediction_dt = DT.predict(new_xv_test)
-    prediction_gbc = GBC.predict(new_xv_test)
-    prediction_rfc = RFC.predict(new_xv_test)
+    pred_LR = lr.predict(new_xv_test)
+    pred_DT = DT.predict(new_xv_test)
+    pred_GBC = GBC.predict(new_xv_test)
+    pred_RFC = RFC.predict(new_xv_test)
 
-    return print("\n\nlr Prediction: {} \nDT Prediction: {} \nGBC Prediction: {} \nRFC Prediction: {}".format(
-        output_label(prediction_lr[0]),
-        output_label(prediction_dt[0]),
-        output_label(prediction_gbc[0]),
-        output_label(prediction_rfc[0])
+    print("\n\nLR Prediction: {} \nDT Prediction: {} \nGBC Prediction: {} \nRFC Prediction: {}".format(
+        output_label(pred_LR[0]),
+        output_label(pred_DT[0]),
+        output_label(pred_GBC[0]),
+        output_label(pred_RFC[0])
     ))
+```
 news = "paste any lines of fake.csv or true.csv"
 manual_testing(news)
+```
+```
 news = "paste any lines of fake.csv or true.csv"
 manual_testing(news)
-6.1 Save model and vectorizer
+```
+__6.1 Save Model and Vectorizer__
+```
 import joblib
 
 joblib.dump(vectorizer, "vectorizer.jb")
 joblib.dump(lr, "lr_model.jb")
-7. Create the Streamlit App
-Inside fake-and-real-news-dataset/data, create a new file: app.py
+```
+### 7. Create the Streamlit App
 
+Inside fake-and-real-news-dataset/data, create a new file: app.py
+```
 import streamlit as st
 import joblib 
 
@@ -227,44 +272,55 @@ if st.button("Predict"):
             st.error("This news is fake")
     else:
         st.warning("Please enter a news article to check.")
-7.1 Run the App
-In the terminal:
+```
+__7.1 Run the App__
 
+In the terminal:
+```
 #cd fake-and-real-news-dataset/data
 #streamlit run app.py
+```
 Then go to the browser link it gives you (usually http://localhost:8501).
 
-7.2 Test the App
+__7.2 Test the App__
+
 Copy a news article from Fake.csv → paste into the app → It should show "FAKE"
 
 Copy a news article from True.csv → paste → It should show "REAL"
 
-8. Final Deployment: Streamlit + GitHub
-Activate Virtual Environment
+### 8. Final Deployment: Streamlit + GitHub
 
+Activate Virtual Environment
+```
 #python -m venv venv              
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 #venv\Scripts\Activate         
-Generate the requirements.txt file
-
+```
+__Generate the requirements.txt file__
+```
 pip install requirements.txt
 pip freeze > requirements.txt
-8.1 Create GitHub Repo
+```
+__8.1 Create GitHub Repo__
+
 Go to https://github.com
 
 Create new repo: GEN-AI-PROJECT
 
 In terminal
-
+```
 git init
 git add .
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/fakenews-detection.git
+git remote add origin https://github.com/YOUR-USERNAME/GenAI-Project.git
 git push -u origin main
+```
+```
 streamlit run app.py
+```
+__8.2 Deploy on Streamlit Cloud__
 
-8.2 Deploy on Streamlit Cloud
 Click on Deploy-->Paste the app.py url-->Mention name of the website-->Deploy it
 
 Once deployed, you’ll get a public link like:
