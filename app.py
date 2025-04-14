@@ -4,7 +4,7 @@ import joblib
 vectorizer = joblib.load('vectorizer.jb')
 model = joblib.load('lr_model.jb')
 
-st.title("fake news detection")
+st.title("Fake news detection with LLM Classification")
 st.write("Enter the news to check if it is real or no")
 
 news_input = st.text_area("News Article:","")
