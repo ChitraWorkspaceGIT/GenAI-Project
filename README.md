@@ -2,13 +2,7 @@
 The project aims to develop a machine-learning model capable of identifying and classifying any news article as fake or not.
 __Steps to follow__
 
-*DataLoading and Preprocessing
-*Data Splitting
-*Training and Testing Data
-*Feature Extraction
-*Training the Classifier
-*Model Evaluation
-*Classifications
+*DataLoading and Preprocessing>>>Data Splitting>>>Training and Testing Data>>>Feature Extraction>>>Training the Classifier>>>Model Evaluation>>>Classifications
 
 ### __1. PREREQUISITES__
 
