@@ -1,5 +1,6 @@
 # FAKE NEWS DETECTION PROJECT STEP BY STEP
 __1. PREREQUISITES__
+
 Setup IDE Environment
 
 Open visual studio code
@@ -11,16 +12,18 @@ Python & Jupyter
 __Create Python Environment__
 
 Open the terminal and run these one by one:
-
+```
 #python --version                  # Check Python version
 #python -m venv venv                # Create a virtual environment
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 #venv\Scripts\Activate         # Activate the environment
-2. Download Dataset
+```
+__2. Download Dataset__
 In terminal
-
+```
 #pip install kaggle
 #kaggle datasets download -d clmentbisaillon/fake-and-real-news-dataset
+```
 (if Kaggle CLI fails)
 
 Go to this URL: https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
@@ -31,18 +34,20 @@ Extract it in your project folder(.kaggle), e.g. fake-and-real-news-dataset/data
 
 You should now see Fake.csv and True.csv in VS Code.
 
-3. Install Python Libraries
+__3. Install Python Libraries__
 In the terminal, install the required libraries:
 
 (And the path C:\Users\chint.kaggle)
-
+```
 #pip install pandas scikit-learn streamlit joblib matplotlib seaborn
 #pip list
+```
 Create and Run the Jupyter Notebook
 
 Inside fake-and-real-news-dataset/data, create a new file: app.ipynb
 
-4 Importing Libraries & Preprocessing data
+__4 Importing Libraries & Preprocessing data__
+```
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -52,7 +57,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import re
 import string
-Load data
+```
+__Load data__
 
 fake = pd.read_csv("Fake.csv")
 true = pd.read_csv("True.csv")
