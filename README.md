@@ -1,5 +1,9 @@
 # FAKE NEWS DETECTION PROJECT STEP BY STEP
 The project aims to develop a machine-learning model capable of identifying and classifying any news article as fake or not.
+![Alt text](C:\Users\chint\Downloads\download.png)
+
+
+
 ### __1. PREREQUISITES__
 
 Setup IDE Environment
