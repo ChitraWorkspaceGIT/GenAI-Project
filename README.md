@@ -1,8 +1,37 @@
 # FAKE NEWS DETECTION PROJECT STEP BY STEP
 The project aims to develop a machine-learning model capable of identifying and classifying any news article as fake or not.
+
 __Steps to follow__
 
 *DataLoading and Preprocessing>>>Data Splitting>>>Training and Testing Data>>>Feature Extraction>>>Training the Classifier>>>Model Evaluation>>>Classifications
+
+__Dependencies__
+
+__Pandas:__ Pandas is a python library used for datasets to analyze, clean, explore, manipulate the data & used to prepare data for ML.
+
+__Seaborn:__ Creates statistical data visualizations on top of matplotlib for exploring and understanding the data well with pandas.
+
+__Matplotlib:__ It is a python library used for creating static, animated, interactive visualization like charts, graphs, enabling data analysis, exploration, presentation.
+
+__Joblib:__ Used for saving and loading trained ML models. It is a python library used for serialization of the large data.
+
+__Streamlit:__ Open souce python library. Used for building and sharing web apps for Datascience and ML Projects. 
+
+__Scikit-learn:__ Open source python library(sk-learn) provides numerous algorithms for building various types of ML models.We can classify, train and preprocess the data.
+
+1. TfidfVectorizer – Converts text into numerical vectors(feature extraction)
+
+2. train_test_split – Splits your data for training and testing
+
+3. Algorithms to classify: LogisticRegression, DecisionTreeClassifier, Gradient Boosting Classifier, RandomForestClassifier.
+
+__*Logistic Regression:__ is a supervised ML model & linear model used for binary classifaction tasks(yes/no, true/false, fake/real)
+
+__*Decisiontree Classifier:__ Splitting the data into branches, tree like structure to interpret and visualize.
+
+__*Gradient boosting classifier:__ ensembling learning model combines the predictions of multiple weak model(decision trees) to make a strong prediction.
+
+__*RandomForestClassifier:__ ensembling learning model uses multiple decision trees to classify the data more accurately.
 
 ### __1. PREREQUISITES__
 
