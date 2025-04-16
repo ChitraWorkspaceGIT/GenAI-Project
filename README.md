@@ -1,6 +1,10 @@
 # FAKE NEWS DETECTION PROJECT STEP BY STEP
 The project aims to develop a machine-learning model capable of identifying and classifying any news article as fake or not.
 
+Dataset has two files: Fake.csv (23502 fake news article)  & True.csv (21417 true news article)
+
+Dataset columns: Title, Text, Subject, Date
+
 __Steps to follow__
 
 *DataLoading and Preprocessing>>>Data Splitting>>>Training and Testing Data>>>Feature Extraction>>>Training the Classifier>>>Model Evaluation>>>Classifications
