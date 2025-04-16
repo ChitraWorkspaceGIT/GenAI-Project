@@ -37,6 +37,8 @@ __*Gradient boosting classifier:__ ensembling learning model combines the predic
 
 __*RandomForestClassifier:__ ensembling learning model uses multiple decision trees to classify the data more accurately.
 
+__LLM Explainer:__ Uses a large language model (LLM) like Mistral or GPT to generate human-readable explanations for machine learning predictions. like why a news article is labeled as "fake" or "real".
+
 ### __1. PREREQUISITES__
 
 Setup IDE Environment
@@ -299,6 +301,9 @@ Go to togetherai in chrome --->generate the api key
 In the jupyter notebook
 
 ```TOGETHER_API_KEY = "paste the api key generated"```
+article text: the news article you want to explain
+
+prediction_label: model's prediction (fake/real)
 ```
 import requests
 import json
