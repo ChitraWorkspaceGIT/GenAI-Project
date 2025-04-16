@@ -290,7 +290,7 @@ joblib.dump(lr, "lr_model.jb")
 In the terminal
 ```pip install requests```
 
-Go to togetherai --->generate the api key
+Go to togetherai in chrome --->generate the api key
 
 In the jupyter notebook
 
