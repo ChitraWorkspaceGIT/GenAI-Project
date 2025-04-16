@@ -285,7 +285,58 @@ import joblib
 joblib.dump(vectorizer, "vectorizer.jb")
 joblib.dump(lr, "lr_model.jb")
 ```
-### 7. Create the Streamlit App
+### 7. LLM Explainer
+
+In the terminal
+```pip install requests```
+
+Go to togetherai --->generate the api key
+
+In the jupyter notebook
+
+```TOGETHER_API_KEY = "paste the api key generated"```
+```
+import requests
+import json
+def get_explanation(article_text, prediction_label):
+    prompt = f"""
+Explain why this article is labeled as {prediction_label}:
+
+Article:
+\"\"\"{article_text}\"\"\"
+
+Look for signs like clickbait, emotional words, or bias.
+"""
+    headers = {
+        "Authorization": f"Bearer {TOGETHER_API_KEY}", 
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "mistralai/Mistral-7B-Instruct-v0.1", 
+        "prompt": prompt, 
+        "max_tokens": 300,  
+        "temperature": 0.7,  
+        "top_p": 0.9, 
+    }
+    response = requests.post("https://api.together.xyz/inference", headers=headers, json=data)
+    if response.status_code == 200:
+        return response.json()['output']['choices'][0]['text']  
+    else:
+        print("Oops! Something went wrong.")
+        print("Error code:", response.status_code)
+        print("Details:", response.text)
+        return None
+```
+```
+article_text = "Virginia officials postpone lottery drawing to decide tied statehouse election"
+prediction_label = "FAKE"
+
+explanation = get_explanation(article_text, prediction_label)
+
+print("Explanation:\n")
+print(explanation)
+```
+### 8. Create the Streamlit App
 
 Inside fake-and-real-news-dataset/data, create a new file: app.py
 ```
@@ -310,7 +361,7 @@ if st.button("Predict"):
     else:
         st.warning("Please enter a news article to check.")
 ```
-__7.1 Run the App__
+__8.1 Run the App__
 
 In the terminal:
 ```
@@ -319,13 +370,13 @@ In the terminal:
 ```
 Then go to the browser link it gives you (usually http://localhost:8501).
 
-__7.2 Test the App__
+__8.2 Test the App__
 
 Copy a news article from Fake.csv → paste into the app → It should show "FAKE"
 
 Copy a news article from True.csv → paste → It should show "REAL"
 
-### 8. Final Deployment: Streamlit + GitHub
+### 9. Final Deployment: Streamlit + GitHub
 
 Activate Virtual Environment
 ```
@@ -338,7 +389,7 @@ __Generate the requirements.txt file__
 pip install requirements.txt
 pip freeze > requirements.txt
 ```
-__8.1 Create GitHub Repo__
+__9.1 Create GitHub Repo__
 
 Go to https://github.com
 
@@ -356,7 +407,7 @@ git push -u origin main
 ```
 streamlit run app.py
 ```
-__8.2 Deploy on Streamlit Cloud__
+__9.2 Deploy on Streamlit Cloud__
 
 Click on Deploy-->Paste the app.py url-->Mention name of the website-->Deploy it
 
