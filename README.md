@@ -37,7 +37,7 @@ __*Gradient boosting classifier:__ ensembling learning model combines the predic
 
 __*RandomForestClassifier:__ ensembling learning model uses multiple decision trees to classify the data more accurately.
 
-__LLM Explainer:__ Uses a large language model (LLM) like Mistral or GPT to generate human-readable explanations for machine learning predictions. like why a news article is labeled as "fake" or "real".
+__LLM EXPLAINER:__ Uses a large language model (LLM) like Mistral or GPT to generate human-readable explanations for machine learning predictions. like why a news article is labeled as "fake" or "real".
 
 ### __1. PREREQUISITES__
 
