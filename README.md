@@ -345,7 +345,33 @@ explanation = get_explanation(article_text, prediction_label)
 print("Explanation:\n")
 print(explanation)
 ```
-### 8. Create the Streamlit App
+### 8. Integrating SHaP
+
+__Load your saved vectorizer and model__
+```
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+import joblib
+
+vectorizer = joblib.load("vectorizer.jb")
+model = joblib.load("lr_model.jb")
+```
+```
+sample_text = ["This is Disturbing, \"Donald Trump just couldn't wish all Americans a Happy New Year and leave it at that. Instead, he had to give a shout out to his enemies, haters, and the very dishonest fake news media. The former reality show star had just one job to do and he couldn't do it. As our Country rapidly grows stronger and smarter, I want to wish all of my friends, supporters, enemies, haters, and even the very dishonest Fake News Media, a Happy and Healthy New Year, President Angry Pants tweeted."]
+
+X_sample = vectorizer.transform(sample_text)
+```
+__Create the SHAP explainer using the trained model and transformed training data &  Plot the SHAP summary plot__
+```
+import shap
+explainer = shap.Explainer(lr, xv_train)  # 'lr' is your Logistic Regression model
+
+shap_values = explainer(xv_test[:10])  # Use the transformed test data
+
+shap.summary_plot(shap_values, feature_names=vectorizer.get_feature_names_out())
+```
+
+### 9. Create the Streamlit App
 
 Inside fake-and-real-news-dataset/data, create a new file: app.py
 ```
@@ -370,7 +396,7 @@ if st.button("Predict"):
     else:
         st.warning("Please enter a news article to check.")
 ```
-__8.1 Run the App__
+__9.1 Run the App__
 
 In the terminal:
 ```
@@ -379,13 +405,13 @@ In the terminal:
 ```
 Then go to the browser link it gives you (usually http://localhost:8501).
 
-__8.2 Test the App__
+__9.2 Test the App__
 
 Copy a news article from Fake.csv → paste into the app → It should show "FAKE"
 
 Copy a news article from True.csv → paste → It should show "REAL"
 
-### 9. Final Deployment: Streamlit + GitHub
+### 10. Final Deployment: Streamlit + GitHub
 
 Activate Virtual Environment
 ```
@@ -398,7 +424,7 @@ __Generate the requirements.txt file__
 pip install requirements.txt
 pip freeze > requirements.txt
 ```
-__9.1 Create GitHub Repo__
+__10.1 Create GitHub Repo__
 
 Go to https://github.com
 
@@ -416,7 +442,7 @@ git push -u origin main
 ```
 streamlit run app.py
 ```
-__9.2 Deploy on Streamlit Cloud__
+__10.2 Deploy on Streamlit Cloud__
 
 Click on Deploy-->Paste the app.py url-->Mention name of the website-->Deploy it
 
